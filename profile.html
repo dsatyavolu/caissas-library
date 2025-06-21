@@ -9,24 +9,56 @@
 <body>
   <header>
     <div class="header-content">
-      <h1>Caïssa's Library</h1>
+      <a href="index.html" class="site-title">Caïssa's Library</a>
+      <nav class="header-nav">
+        <a href="profile.html">Profile</a>
+        <a href="games.html">Games</a>
+        <a href="lists.html">Lists</a>
+        <a href="journal.html">Journal</a>
+        <a href="#">Search</a>
+      </nav>
     </div>
   </header>
   <div class="container">
-    <nav class="sidebar">
-      <a href="index.html">Home</a>
-      <a href="profile.html">Profile</a>
-    </nav>
     <main>
       <img src="images/avatar.png" alt="User Avatar" class="avatar" />
       <h2>@username</h2>
       <p class="bio">bio</p>
-
       <section class="favorites">
         <h3>Favorite Game</h3>
         <p><strong>game name</strong> caption</p>
       </section>
+      <section class="journal-reviews">
+        <h3>Journal Reviews</h3>
+        <div id="profile-journal-entries">
+          <!-- reviews will be shown here -->
+        </div>
+      </section>
     </main>
   </div>
+  <script>
+    // load profile entries from localStorage
+    function loadProfileEntries() {
+      const entries = JSON.parse(localStorage.getItem('journalEntries') || '[]');
+      const container = document.getElementById('profile-journal-entries');
+      container.innerHTML = '';
+      if (entries.length === 0) {
+        container.innerHTML = '<p style="color:#b3b3b3;">No journal reviews yet.</p>';
+      } else {
+        entries.forEach(entry => {
+          const div = document.createElement('div');
+          div.style.background = '#222';
+          div.style.borderRadius = '10px';
+          div.style.padding = '18px 16px';
+          div.style.marginBottom = '18px';
+          div.style.boxShadow = '0 2px 12px rgba(0,0,0,0.10)';
+          div.innerHTML = `<strong style="color:#fff;">${entry.game}</strong><br>
+            <span style="color:#b3b3b3;">${entry.review.replace(/\n/g, '<br>')}</span>`;
+          container.appendChild(div);
+        });
+      }
+    }
+    loadProfileEntries();
+  </script>
 </body>
 </html>
