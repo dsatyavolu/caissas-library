@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Game Database - Caïssa's Library</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .db-list {
+      margin: 0 0 32px 0;
+      padding: 0;
+      list-style: none;
+    }
+    .db-list li {
+      background: #222;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      padding: 18px 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .db-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      transition: color 0.18s;
+    }
+    .db-title:hover {
+      color: #ffe082;
+      text-decoration: underline;
+    }
+    .db-meta {
+      font-size: 0.98rem;
+      color: #b3b3b3;
+      margin-top: 4px;
+    }
+    .db-desc {
+      font-size: 1.02rem;
+      color: #d0d0d0;
+      margin: 12px 0 0 0;
+      line-height: 1.5;
+      display: none;
+      transition: all 0.2s;
+    }
+    .db-desc.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <a href="index.html" class="site-title">Caïssa's Library</a>
+      <nav class="header-nav">
+        <a href="profile.html">Profile</a>
+        <a href="games.html">Games</a>
+        <a href="lists.html">Lists</a>
+        <a href="journal.html">Journal</a>
+        <a href="database.html">Database</a>
+        <a href="#">Search</a>
+      </nav>
+    </div>
+  </header>
+  <div class="container">
+    <main>
+      <h2>Game Database</h2>
+      <ul class="db-list" id="game-list"></ul>
+    </main>
+  </div>
+  <script>
+    const games = [
+      {
+        title: "Magnus Carlsen vs. Viswanathan Anand",
+        date: "2013-11-19",
+        location: "Chennai, India",
+        desc: "Game 9 of the 2013 World Chess Championship. Carlsen, leading the match, played solidly as White and drew with Anand, moving closer to his first world title."
+      },
+      {
+        title: "Bobby Fischer vs. Boris Spassky",
+        date: "1972-07-11",
+        location: "Reykjavik, Iceland",
+        desc: "Game 6 of the 1972 World Chess Championship. Fischer, playing White, produced a masterpiece in the Queen's Gambit Declined, stunning Spassky and the chess world."
+      },
+      {
+        title: "Garry Kasparov vs. Veselin Topalov",
+        date: "1999-01-20",
+        location: "Wijk aan Zee, Netherlands",
+        desc: "A legendary attacking game by Kasparov, often called the 'Kasparov Immortal.' He sacrifices material for a brilliant king hunt and a memorable finish."
+      }
+    ];
+
+    const gameList = document.getElementById('game-list');
+
+    games.forEach((game, idx) => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <span class="db-title" data-idx="${idx}">${game.title}</span>
+        <span class="db-meta">${game.date} &mdash; ${game.location}</span>
+        <div class="db-desc" id="desc-${idx}">${game.desc}</div>
+      `;
+      gameList.appendChild(li);
+    });
+
+    document.querySelectorAll('.db-title').forEach(title => {
+      title.addEventListener('click', function() {
+        // Hide all descriptions first
+        document.querySelectorAll('.db-desc').forEach(desc => desc.classList.remove('active'));
+        // Show only the clicked one
+        const idx = this.getAttribute('data-idx');
+        document.getElementById('desc-' + idx).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
