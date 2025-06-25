@@ -5,6 +5,138 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Home - Caïssa's Library</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
+  <style>
+    .chess-slideshow-container {
+      width: 100vw;
+      max-width: 100%;
+      height: 420px;
+      margin: 0 auto;
+      border-radius: 0 0 18px 18px;
+      overflow: hidden;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+      background: #181818;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      z-index: 1;
+    }
+    .chess-slideshow-img {
+      width: 100vw;
+      max-width: 100%;
+      height: 420px;
+      object-fit: cover;
+      display: block;
+      background: #222;
+      position: absolute;
+      top: 0; left: 0;
+      z-index: 1;
+      opacity: 1;
+      transition: opacity 0.8s;
+    }
+    .chess-slideshow-img.fade-out {
+      opacity: 0;
+      transition: opacity 0.8s;
+    }
+    .chess-slideshow-img.fade-in {
+      opacity: 1;
+      transition: opacity 0.8s;
+    }
+    .chess-slideshow-caption {
+      width: 100vw;
+      max-width: 100%;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      font-size: 1.2rem;
+      font-family: 'Inter', Arial, sans-serif;
+      text-align: left;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      z-index: 2;
+      padding: 18px 48px 12px 48px;
+      box-sizing: border-box;
+      opacity: 1;
+      transition: opacity 0.8s;
+    }
+    .chess-slideshow-caption.fade-out {
+      opacity: 0;
+      transition: opacity 0.8s;
+    }
+    .chess-slideshow-caption.fade-in {
+      opacity: 1;
+      transition: opacity 0.8s;
+    }
+    .chess-slideshow-credit {
+      font-size: 1.05rem;
+      color: #ffe082;
+      margin-top: 8px;
+      font-style: italic;
+      text-align: right;
+      display: block;
+    }
+    .homepage-hero {
+      width: 100vw;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 48px 0 32px 0;
+      text-align: center;
+      background: transparent;
+    }
+    .homepage-hero h2 {
+      font-size: 2.6rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      color: #fff;
+      letter-spacing: 0.02em;
+    }
+    .homepage-hero p {
+      font-size: 1.25rem;
+      color: #e0e0e0;
+      margin: 10px 0;
+      line-height: 1.7;
+    }
+    .register-btn {
+      margin-top: 32px;
+      background: #ffe082;
+      color: #181818;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 38px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+      letter-spacing: 0.02em;
+    }
+    .register-btn:hover {
+      background: #fff3c1;
+      color: #7a5c1e;
+      box-shadow: 0 4px 16px rgba(122,92,30,0.08);
+    }
+    @media (max-width: 900px) {
+      .chess-slideshow-container,
+      .chess-slideshow-img {
+        height: 200px;
+      }
+      .chess-slideshow-caption {
+        font-size: 1rem;
+        padding: 10px 10px 6px 10px;
+      }
+      .homepage-hero {
+        padding: 24px 0 18px 0;
+      }
+      .homepage-hero h2 {
+        font-size: 1.5rem;
+      }
+      .register-btn {
+        font-size: 1rem;
+        padding: 10px 22px;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -20,26 +152,87 @@
       </nav>
     </div>
   </header>
+  <div class="chess-slideshow-container">
+    <img id="chess-slideshow-img" class="chess-slideshow-img" src="images/1985.jpg" alt="Famous Chess Game" />
+    <div class="chess-slideshow-caption" id="chess-slideshow-caption">
+      Garry Kasparov vs. Anatoly Karpov World Championship Match 1985, Moscow, Soviet Union.
+      <span class="chess-slideshow-credit">Photo: https://chessentials.com/kasparov-karpov-world-championship-match-1985/</span>
+    </div>
+  </div>
+  <div class="homepage-hero">
+    <h2>Welcome to Caïssa's Library</h2>
+    <p>Archive what you’ve studied.<br>
+    Catalog what you’re yet to explore.<br>
+    Contribute to the living library of chess.</p>
+    <button class="register-btn" onclick="window.location.href='register.html'">Register</button>
+  </div>
   <div class="container">
     <main>
       <section>
-        <h2>Welcome to Caïssa's Library</h2>
-        <p><!-- homepage introduction placeholder --></p>
-      </section>
-      <section>
         <h3>Features</h3>
         <ul style="text-align:left; display:inline-block;">
-          <li><!-- feature 1 placeholder --></li>
-          <li><!-- feature 2 placeholder --></li>
-          <li><!-- feature 3 placeholder --></li>
-          <li><!-- feature 4 placeholder --></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
         </ul>
       </section>
       <section>
         <h3>Get Started</h3>
-        <p><!-- instructions placeholder --></p>
+        <p></p>
       </section>
     </main>
   </div>
+  <script>
+    const chessSlides = [
+      {
+        img: "images/1985.jpg",
+        caption: "Garry Kasparov vs. Anatoly Karpov World Championship Match 1985, Moscow, Soviet Union.",
+        credit: "Photo: https://chessentials.com/kasparov-karpov-world-championship-match-1985/"
+      },
+      {
+        img: "images/2013.jpg",
+        caption: "Viswanathan Anand vs. Magnus Carlsen, World Chess Championship 2013, Chennai, India.",
+        credit: "Photo: https://www.worldchesschampionship2013.com/2013/12/world-chess-champion-magnus-carlsen-is.html"
+      }
+    ];
+
+    let currentSlide = 0;
+    const imgEl = document.getElementById('chess-slideshow-img');
+    const captionEl = document.getElementById('chess-slideshow-caption');
+
+    function fadeOutIn(element, newContent, isImg, newAlt) {
+      element.classList.add('fade-out');
+      setTimeout(() => {
+        if (isImg) {
+          element.src = newContent;
+          if (newAlt) element.alt = newAlt;
+        } else {
+          element.innerHTML = newContent;
+        }
+        element.classList.remove('fade-out');
+        element.classList.add('fade-in');
+        setTimeout(() => {
+          element.classList.remove('fade-in');
+        }, 800);
+      }, 800);
+    }
+
+    function showSlide(idx) {
+      fadeOutIn(imgEl, chessSlides[idx].img, true, chessSlides[idx].caption);
+      fadeOutIn(
+        captionEl,
+        `${chessSlides[idx].caption}<span class="chess-slideshow-credit">${chessSlides[idx].credit}</span>`,
+        false
+      );
+    }
+
+    setInterval(() => {
+      currentSlide = (currentSlide + 1) % chessSlides.length;
+      showSlide(currentSlide);
+    }, 15000);
+
+    showSlide(0);
+  </script>
 </body>
 </html>
