@@ -181,6 +181,11 @@
         <h3>Get Started</h3>
         <p></p>
       </section>
+      <section>
+        <h3>Featured Games</h3>
+        <ul id="gameList" style="list-style: none; padding: 0;"></ul>
+        <div id="board" style="width: 400px; margin-top: 20px;"></div>
+      </section>
     </main>
   </div>
   <script>
@@ -233,6 +238,41 @@
     }, 15000);
 
     showSlide(0);
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.0.0/chess.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const board = Chessboard('board', 'start');
+      const gameList = document.getElementById('gameList');
+
+      fetch('http://localhost:3000/games')
+        .then(res => res.json())
+        .then(data => {
+          console.log("Fetched games:", data);
+          data.forEach(game => {
+            console.log("Rendering game:", game.title);
+            const li = document.createElement('li');
+            li.textContent = game.title;
+            li.style.cursor = 'pointer';
+            li.style.marginBottom = '10px';
+            li.style.color = '#ffe082';
+            li.style.fontWeight = 'bold';
+
+            li.onclick = () => {
+              const chess = new Chess();
+              chess.load_pgn(game.pgn);
+              board.position(chess.fen());
+            };
+
+            gameList.appendChild(li);
+          });
+        })
+        .catch(err => {
+          gameList.innerHTML = `<li style="color: red;">Failed to load games.</li>`;
+          console.error(err);
+        });
+    });
   </script>
 </body>
 </html>
