@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register - Caïssa's Library</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .register-form {
+      max-width: 400px;
+      margin: 60px auto;
+      background: #181818;
+      border-radius: 14px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+      padding: 36px 28px;
+      text-align: left;
+    }
+    .register-form label {
+      display: block;
+      margin-bottom: 8px;
+      color: #fff;
+      font-weight: 600;
+    }
+    .register-form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 18px;
+      border-radius: 6px;
+      border: none;
+      background: #222;
+      color: #fff;
+      font-size: 1rem;
+    }
+    .register-form button {
+      width: 100%;
+      background: #ffe082;
+      color: #181818;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+    }
+    .register-form button:hover {
+      background: #fff3c1;
+      color: #7a5c1e;
+    }
+    .register-form .msg {
+      color: #ffe082;
+      margin-bottom: 12px;
+      font-size: 1rem;
+      min-height: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <a href="index.html" class="site-title">Caïssa's Library</a>
+      <nav class="header-nav">
+        <a href="profile.html">Profile</a>
+        <a href="games.html">Games</a>
+        <a href="lists.html">Lists</a>
+        <a href="journal.html">Journal</a>
+        <a href="database.html">Database</a>
+        <a href="#">Search</a>
+      </nav>
+    </div>
+  </header>
+  <form class="register-form" id="registerForm" autocomplete="off">
+    <h2>Create Account</h2>
+    <div class="msg" id="registerMsg"></div>
+    <label for="reg-username">Username</label>
+    <input type="text" id="reg-username" required autocomplete="off" />
+    <label for="reg-password">Password</label>
+    <input type="password" id="reg-password" required autocomplete="new-password" />
+    <button type="submit">Create Account</button>
+  </form>
+  <script>
+    document.getElementById('registerForm').onsubmit = async function(e) {
+      e.preventDefault();
+      const username = document.getElementById('reg-username').value.trim();
+      const password = document.getElementById('reg-password').value;
+      const msg = document.getElementById('registerMsg');
+      
+      if (!username || !password) {
+        msg.textContent = "Please fill in both fields.";
+        return;
+      }
+      
+      try {
+        const response = await fetch('http://localhost:5000/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('user', JSON.stringify({ username: data.user.username }));
+          
+          msg.textContent = "Account created! Redirecting to profile...";
+          setTimeout(() => {
+            window.location.href = "profile.html";
+          }, 1200);
+        } else {
+          msg.textContent = data.message || "Registration failed.";
+        }
+      } catch (error) {
+        console.error('Registration error:', error);
+        msg.textContent = "Server error. Please try again later.";
+      }
+    };
+  </script>
+</body>
+</html>
