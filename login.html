@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Caïssa's Library</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .login-form {
+      max-width: 400px;
+      margin: 60px auto;
+      background: #181818;
+      border-radius: 14px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+      padding: 36px 28px;
+      text-align: left;
+    }
+    .login-form label {
+      display: block;
+      margin-bottom: 8px;
+      color: #fff;
+      font-weight: 600;
+    }
+    .login-form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 18px;
+      border-radius: 6px;
+      border: none;
+      background: #222;
+      color: #fff;
+      font-size: 1rem;
+    }
+    .login-form button {
+      width: 100%;
+      background: #ffe082;
+      color: #181818;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+    }
+    .login-form button:hover {
+      background: #fff3c1;
+      color: #7a5c1e;
+    }
+    .login-form .msg {
+      color: #ffe082;
+      margin-bottom: 12px;
+      font-size: 1rem;
+      min-height: 1.2em;
+    }
+    .login-form .register-link {
+      text-align: center;
+      margin-top: 18px;
+      color: #b3b3b3;
+    }
+    .login-form .register-link a {
+      color: #ffe082;
+      text-decoration: none;
+    }
+    .login-form .register-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <a href="index.html" class="site-title">Caïssa's Library</a>
+      <nav class="header-nav">
+        <a href="profile.html">Profile</a>
+        <a href="games.html">Games</a>
+        <a href="lists.html">Lists</a>
+        <a href="journal.html">Journal</a>
+        <a href="database.html">Database</a>
+        <a href="#">Search</a>
+      </nav>
+    </div>
+  </header>
+  <form class="login-form" id="loginForm" autocomplete="off">
+    <h2>Login</h2>
+    <div class="msg" id="loginMsg"></div>
+    <label for="username">Username</label>
+    <input type="text" id="username" required autocomplete="off" />
+    <label for="password">Password</label>
+    <input type="password" id="password" required autocomplete="current-password" />
+    <button type="submit">Login</button>
+    <div class="register-link">
+      Don't have an account? <a href="register.html">Register</a>
+    </div>
+  </form>
+  <script>
+    document.getElementById('loginForm').onsubmit = async function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const msg = document.getElementById('loginMsg');
+      
+      if (!username || !password) {
+        msg.textContent = "Please fill in both fields.";
+        return;
+      }
+      
+      try {
+        const response = await fetch('http://localhost:5000/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('user', JSON.stringify({ username: data.user.username }));
+          
+          msg.textContent = "Login successful! Redirecting...";
+          setTimeout(() => {
+            window.location.href = "profile.html";
+          }, 1200);
+        } else {
+          msg.textContent = data.message || "Login failed.";
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        msg.textContent = "Server error. Please try again later.";
+      }
+    };
+  </script>
+</body>
+</html>
